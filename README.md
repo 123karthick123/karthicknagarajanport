@@ -10,7 +10,6 @@ Personal portfolio site for a Full-Stack Developer from Madurai, Tamil Nadu. Bui
 | Styling    | Tailwind CSS 3 over CSS-variable theme tokens |
 | Animation  | Framer Motion                                 |
 | Icons      | lucide-react, animated with Framer Motion     |
-| 3D         | three + @react-three/fiber + @react-three/drei |
 
 Single page, so no router is included.
 
