@@ -1,0 +1,288 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------- tokens */
+:root,
+:root[data-theme='dark'] {
+  --bg: #0b1020;
+  --surface: #121a2e;
+  --surface-2: #18223b;
+  --border: rgba(129, 140, 248, 0.18);
+  --text: #e8ecf6;
+  --muted: #9aa6c0;
+  --accent: #6366f1;
+  --accent-2: #2dd4bf;
+  --glow: 129, 140, 248;
+  --nav-bg: rgba(11, 16, 32, 0.72);
+  --card-top: rgba(255, 255, 255, 0.04);
+  --ring: rgba(129, 140, 248, 0.55);
+}
+
+:root[data-theme='light'] {
+  --bg: #fff7ea;
+  --surface: #ffffff;
+  --surface-2: #ffebcb;
+  --border: rgba(194, 100, 12, 0.22);
+  --text: #2a1a0c;
+  --muted: #7a5f45;
+  --accent: #c2410c;
+  --accent-2: #b45309;
+  --glow: 245, 158, 11;
+  --sun: #fdb813;
+  --nav-bg: rgba(255, 247, 234, 0.78);
+  --card-top: rgba(194, 100, 12, 0.04);
+  --ring: rgba(194, 100, 12, 0.6);
+}
+
+/* ------------------------------------------------------------------ base */
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  /* belt and braces against a stray wide child opening a sideways scroll */
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Manrope', system-ui, sans-serif;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+/* fluid type scale */
+.t-display {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+}
+.t-h2 {
+  font-size: clamp(1.75rem, 4.2vw, 2.75rem);
+}
+.t-h3 {
+  font-size: clamp(1.125rem, 2.2vw, 1.375rem);
+}
+.t-body {
+  font-size: clamp(1rem, 1.1vw, 1.0625rem);
+}
+.t-small {
+  font-size: 0.875rem;
+}
+
+.lede {
+  max-width: 65ch;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: rgba(var(--glow), 0.3);
+}
+
+/* -------------------------------------------------------------- helpers */
+.shell {
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: 16px;
+}
+
+@media (min-width: 640px) {
+  .shell {
+    padding-inline: 32px;
+  }
+}
+
+.card {
+  background:
+    linear-gradient(var(--card-top), var(--card-top)),
+    var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+}
+
+.grad-word {
+  background: linear-gradient(100deg, var(--accent), var(--accent-2), var(--accent));
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: grad-slide 7s linear infinite;
+}
+
+@keyframes grad-slide {
+  to {
+    background-position: 220% 0;
+  }
+}
+
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+
+/* outlined display type — the hero name */
+.hollow {
+  color: transparent;
+  -webkit-text-stroke: clamp(1px, 0.14vw, 2px) rgba(255, 255, 255, 0.82);
+  transition: color 0.5s ease;
+}
+
+.hollow:hover {
+  color: rgba(255, 255, 255, 0.07);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hollow {
+    transition: none;
+  }
+}
+
+/* dotted / grid page texture */
+.page-texture {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  background-image: radial-gradient(rgba(var(--glow), 0.16) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(120% 90% at 50% 0%, #000 10%, transparent 70%);
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 10%, transparent 70%);
+}
+
+/* ---------------------------------------------------------- lamp / sun */
+.lamp-dark {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  pointer-events: none;
+  /* kept at a level where text outside the cone still clears WCAG AA */
+  background: rgba(2, 4, 12, 0.6);
+  mask-image: radial-gradient(
+    circle var(--cone-r, 360px) at var(--cone-x, 50%) var(--cone-y, 40%),
+    transparent 0%,
+    rgba(0, 0, 0, 0.55) 55%,
+    #000 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    circle var(--cone-r, 360px) at var(--cone-x, 50%) var(--cone-y, 40%),
+    transparent 0%,
+    rgba(0, 0, 0, 0.55) 55%,
+    #000 100%
+  );
+  transition: background 0.4s ease;
+}
+
+.lamp-cone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 46vmax;
+  height: 120vh;
+  transform-origin: 50% 0%;
+  background: linear-gradient(
+    to bottom,
+    rgba(var(--glow), 0.3) 0%,
+    rgba(var(--glow), 0.1) 35%,
+    transparent 72%
+  );
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  filter: blur(14px);
+}
+
+.sun-wash {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(70vmax 50vmax at 88% -8%, rgba(253, 184, 19, 0.38), transparent 62%),
+    radial-gradient(90vmax 70vmax at 20% 110%, rgba(245, 158, 11, 0.16), transparent 70%);
+}
+
+/* ------------------------------------------------- icon draw-in */
+.icon-draw svg > * {
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+}
+
+.icon-draw.is-in svg > * {
+  animation: icon-draw 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.icon-draw.is-in svg > *:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.icon-draw.is-in svg > *:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.icon-draw.is-in svg > *:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+@keyframes icon-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+/* ------------------------------------------------- reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .grad-word {
+    animation: none;
+  }
+  .icon-draw svg > *,
+  .icon-draw.is-in svg > * {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
